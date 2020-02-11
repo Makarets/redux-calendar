@@ -13,15 +13,22 @@ code {
 }
 
 
+.form-bg {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #E2ECF5;
+}
+
 .center-form {
 	width: 400px;
 	position: absolute;
 	left: 50%;
 	top: 45%;
 	transform: translate(-50%, -50%);
-	padding: 25px;
-	padding-top: 18px;
-	background: #F5F6FA;
+	padding: 28px;
+	padding-top: 20px;
+	background: #fff;
 	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
 	border-radius: 6px;
 }
@@ -29,9 +36,50 @@ code {
 .center-form form button {
 	margin-top: 30px;
 }
+
+.center-form form .error-prompt{
+	color: #FC6180;
+	font-size: 13px;
+}
+
+.center-form form input.input-error {
+	border-color: #FC6180;
+}
+
 .center-form .form-title {
-	font-size: 23px;
+	font-size: 25px;
+    font-weight: 300;
+    letter-spacing: -.5px;
 	color: #212529;
 	text-align: center;
-	margin-bottom: 25px;
+	margin-bottom: 32px;
+}
+
+.center-form .form-title span {
+	font-weight: 400;
+	color: #30A5E0;
+}
+
+
+.navlink {
+	font-size: 16px;
+	color: #30A5E0;
+}
+
+form .navlink {
+	display: inline-block;
+	padding: 8px 0;
+	text-decoration: underline;
+}
+
+.main {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.app-content {
+	display: block;
+	height: 100%;
+	background-color: #fff;
 }

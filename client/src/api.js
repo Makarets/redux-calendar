@@ -1,17 +1,17 @@
 import * as axios from "axios";
 
-const api_path = "http://localhost:9000/api";
+const instance = axios.create({
+	baseURL: "http://localhost:9000/api",
+	headers: {
+	  'Content-Type': 'application/json'
+	}
+})
 
-const header_json = {
-   headers: {
-      'Content-Type': 'application/json'
-   }
-}
-
-export const register = (data) => {
-   return axios.post(api_path + "/user/register", data, header_json)
-}
-
-export const login = (data) => {
-   return axios.post(api_path + "/user/login", data, header_json)
+export const authAPI = {
+	signup(data) {
+	   return instance.post("/user/register", data)
+	},
+	login(data) {
+   		return instance.post("/user/login", data)
+	}
 }

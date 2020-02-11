@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import Header from './common/Header.jsx';
 
 const Calendar = (props) => {
 	return(
-		<div>CALENDAR SPACE!!!</div>
+		<div className='main'>
+			<Header />
+			<div className='app-content'>calendar</div>
+		</div>
 	);
 }
 

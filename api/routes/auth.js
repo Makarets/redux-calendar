@@ -6,11 +6,18 @@ const { registerValidation, loginValidation } = require('../validation');
 
 router.post('/register', async (req, res) => {
 	const {error} = registerValidation(req.body);
-	if(error) return res.status(400).send(error.details[0].message);
+	if(error) return res.status(400).send({
+							error_field: error.details[0].context.label,
+							message: error.details[0].message
+						});
+
 
 	// Checking if the user is already in the database
 	const emailExist = await User.findOne({email: req.body.email});
-	if(emailExist) return res.status(400).send('Email already exists');
+	if(emailExist) return res.status(400).send({
+			error_field: "email",
+			message: 'Email already exists'
+		});
 
 	// Hash passwords
 	const salt = await bcrypt.genSalt(10);
@@ -35,19 +42,25 @@ router.post('/register', async (req, res) => {
 // LOGIN 
 router.post('/login', async (req, res) => {
 	const {error} = loginValidation(req.body);
-	if(error) return res.status(400).send(error.details[0].message);
-		// Checking if the user is already in the database
-		const user = await User.findOne({email: req.body.email});
-		if(!user) return res.status(400).send('Email is not found!');
-		// Password is correct
-		const vlidPass = await bcrypt.compare(req.body.password, user.password);
-		if(!vlidPass) return res.status(400).send("Invalid password");
-		
-		// Create and assign a token
-		const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-		res.header('auth-token', token).send(token);
-
-		res.send('Logged in!');
+	if(error) return res.status(400).send({
+					error_field: error.details[0].context.label,
+					message: error.details[0].message
+				});
+	// Checking if email exists
+	const user = await User.findOne({email: req.body.email});
+	if(!user) return res.status(400).send({
+		error_field: 'email',
+		message: 'Email is not found!'
+	});
+	// Checking password is correct
+	const vlidPass = await bcrypt.compare(req.body.password, user.password);
+	if(!vlidPass) return res.status(400).send({
+		error_field: "password",
+		message: "Invalid password"
+	});
+	// Create and assign a token
+	const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
+	res.header('auth-token', token).send({access_token: token});
 });
 
 module.exports = router;
