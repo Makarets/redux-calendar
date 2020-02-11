@@ -1,28 +1,17 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+import LoginContainer from './components/Authorization/LoginContainer.jsx';
+import Calendar from './components/Calendar.jsx';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { apiResponse: "" };
-  }
-
-  callAPI() {
-    fetch("")
-        .then(res => res.text())
-        .then(res => this.setState({ apiResponse: res }));
-  }
-
-  componentWillMount() {
-    this.callAPI();
-  }
-
   render() {
     return(
-      <div>
-        <p className="App-intro">{this.state.apiResponse}</p>
-      </div>
+      <BrowserRouter>
+        <Route exact path="/" component={Calendar} />
+        <Route exact path="/login" component={LoginContainer} />
+      </BrowserRouter>
     );
   }
 }
