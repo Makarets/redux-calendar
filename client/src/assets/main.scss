@@ -1,3 +1,4 @@
+
 .main {
 	display: block;
 	width: 100%;
@@ -45,10 +46,31 @@
 			& .event-list {
 				& .event {
 					display: inline-block;
-					background: red;
+					background: #E2ECF5;
+					padding: 10px;
+					border-left: 1.5px solid #6E9ECF;
 					position: absolute;
 				}
 			}
 		}
+	}
+}
+
+.time-row.form-row {
+	height: 38px;
+	margin: 0;
+	margin-bottom: 25px;
+	align-items: center;
+	& .form-label {
+		width: 37px;
+		height: 38px;
+		margin-right: 25px;
+		&.time-separate {
+			width: 4px;
+			margin-right: 10px;
+		}
+	}
+	& .hours-select {
+		margin-right: 10px;
 	}
 }

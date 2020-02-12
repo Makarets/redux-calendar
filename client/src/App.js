@@ -4,7 +4,7 @@ import './assets/main.scss';
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import LoginReduxForm from './components/Authorization/Login.jsx';
 import RegistrationReduxForm from './components/Authorization/Registration.jsx';
-import Calendar from './components/Calendar.jsx'
+import Calendar from './components/Calendar/Calendar.jsx'
 import PrivateRoute from "./PrivateRoute.jsx";
 import PublicRoute from "./PublicRoute.jsx";
 

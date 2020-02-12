@@ -16,6 +16,10 @@ p, span, div, a  {
 	font-family: 'Open Sans', sans-serif;
 }
 
+textarea {
+	resize: none !important;
+}
+
 
 .form-bg {
 	position: absolute;
