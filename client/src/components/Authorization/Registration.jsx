@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { connect } from "react-redux";
 import { Field, reduxForm } from 'redux-form';
 import { NavLink } from "react-router-dom";
 import { Input } from "../common/FormsControl/Input.jsx";
+import { signup_action } from "../../redux/Auth/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Registration = (props) => {
+	const onSubmit = (formData) => {
+		return props.signup_action(formData, props.history);
+	}
 	return(
 		<div className='form-bg'>
 			<div className='center-form'>
 				<h1 className='form-title'>Create your account</h1>
-				<Form className='registration-form' onSubmit={props.handleSubmit}>
+				<Form className='registration-form' onSubmit={props.handleSubmit(onSubmit)}>
 					<Form.Group controlId="formBasicEmail">
 						<Form.Label>Email address</Form.Label>
 						<Field type="email" name="email" placeholder="Enter email" component={Input} required />
@@ -31,4 +36,6 @@ const Registration = (props) => {
 	);
 };
 
-export const RegistrationReduxForm = reduxForm({form:'registrationForm'})(Registration);
+const RegistrationReduxForm = reduxForm({form:'registrationForm'})(Registration);
+
+export default connect(undefined, { signup_action })(RegistrationReduxForm);
