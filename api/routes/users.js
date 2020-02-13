@@ -9,8 +9,7 @@ router.get('/:id', async function(req, res, next) {
 		error_field: 'email',
 		message: 'Email is not found!'
 	});
-	return res.status(200).send({a: 'awdawddaw'});
-	// Chec
+	return res.status(200).send({a: user.email});
 });
 
 module.exports = router;

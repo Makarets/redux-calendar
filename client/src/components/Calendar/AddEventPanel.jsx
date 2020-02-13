@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const AddEventForm = (props) => {
 	const onSubmit = (formData) => {
 		props.setEvent(formData);
+		props.onHide();
 	}
 	return(
 		<div className="add-event-panel">
@@ -19,9 +20,10 @@ const AddEventForm = (props) => {
 				<Modal.Body>
 					<Form className='add-event-form' onSubmit={props.handleSubmit(onSubmit)}>
 						<Form.Group controlId="formBasicEmail">
-							<Form.Label>Event lable</Form.Label>
-							<Field placeholder="Event lable" name='lable' maxlength="30" component={Textarea} required />
+							<Form.Label>Event label</Form.Label>
+							<Field placeholder="Event label" name='label' maxlength="30" component={Textarea} required />
 						</Form.Group>
+						<Form.Label>Pick event time:</Form.Label>
 						<Form.Row className='time-row'>
 							<Form.Label>from</Form.Label>
 							<Form.Group as='Col' controlId="formBasicnumber" className='hours-select'>
@@ -42,7 +44,7 @@ const AddEventForm = (props) => {
 								<Field type="number" min='0' max='59' name="end_minutes" component={Input} required />
 							</Form.Group>
 						</Form.Row>
-						<Button variant="primary" type="submit" block>Login</Button>
+						<Button variant="btn btn-success" type="submit" block>Save</Button>
 					</Form>
 				</Modal.Body>
 			</Modal>

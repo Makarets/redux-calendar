@@ -19,6 +19,9 @@
 					display: flex;
 					height: 200px;
 					border-top: 0.5px solid #e2e0e0;
+					&:last-child {
+						height: 0;
+					}
 					& .time-line {
 						width: 50px;
 						display: flex;
@@ -45,9 +48,12 @@
 			}
 			& .event-list {
 				& .event {
+					max-width: 200px;
 					display: inline-block;
+					font-size: 14px;
+					left: 50px;
+					padding: 5px 8px;
 					background: #E2ECF5;
-					padding: 10px;
 					border-left: 1.5px solid #6E9ECF;
 					position: absolute;
 				}

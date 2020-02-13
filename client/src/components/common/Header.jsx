@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const Header = (props) => {
 	const logout = () => {
 		props.logout_action();
+		localStorage.clear();
 	}
 	return(
 		<Navbar bg="light" expand="lg">

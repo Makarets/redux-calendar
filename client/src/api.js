@@ -15,3 +15,12 @@ export const authAPI = {
    		return instance.post("/user/login", data)
 	}
 }
+
+export const eventAPI = {
+	addEvent(data) {
+		return instance.post("/event/add", data)
+	},
+	getUserEvents(user_id) {
+		return instance.get("/event/" + user_id)
+	}
+}

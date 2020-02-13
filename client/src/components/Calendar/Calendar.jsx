@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import Header from '../common/Header.jsx';
 import { AddEventPanel } from './AddEventPanel.jsx';
 import { Modal, Button  } from 'react-bootstrap';
+import { add_event_action, get_event_action } from "../../redux/Calendar/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -10,11 +12,7 @@ class Calendar extends React.Component {
 	    super(props);
 
 	    this.state = {
-	    	modalShow: false,
-	    	eventStart: 0,
-	    	eventEnd: 0,
-	    	eventDuration: 0,
-	    	events: []
+	    	modalShow: false
 	    }
 	}
 
@@ -24,16 +22,19 @@ class Calendar extends React.Component {
 		})
 	}
 
-	setEventInfo = (startH, startM, endH, endM, lable) => {
+	setEventInfo = (startH, startM, endH, endM, label) => {
 		const eventEnd = endH + endM;
 		const eventStart = startH + startM;
 		const eventTop = Math.ceil((eventStart)*3.333);
 		const eventHeight = Math.ceil((eventEnd - eventStart)*3.333);
-		this.setState({
+		const userId = localStorage.getItem("user_id");
+		this.props.add_event_action({
+			label: label, 
+			top: eventTop,
+			user_id: userId,
+			height: eventHeight,
 			eventStart: eventStart,
-			eventEnd: eventEnd,
-			eventDuration: eventEnd - eventStart,
-			events: [...this.state.events, {top: eventTop, height: eventHeight, lable: lable}]
+			eventDuration: eventEnd - eventStart
 		})
 	}
 
@@ -42,23 +43,29 @@ class Calendar extends React.Component {
 		const start_minutes = Number(data.start_minutes);
 		const end_hours     = Number(data.end_hours);
 		const end_minutes   = Number(data.end_minutes);
-		this.setEventInfo(start_hours, start_minutes, end_hours, end_minutes, data.lable);
-		console.log(this.state);
+		this.setEventInfo(start_hours, start_minutes, end_hours, end_minutes, data.label);
+	}
+
+	componentDidMount() {
+		const userId = localStorage.getItem("user_id");
+		this.props.get_event_action(userId);
+		setTimeout(function(){
+			var elem = document.getElementsByClassName('event');
+			for(let i=0; elem.length > i; i++) {
+				console.log(elem[i].getBoundingClientRect());
+			}
+		}, 3000)
 	}
 
 	render() {
-		const events = Object.keys(this.state.events).map((val, i) => {
-			return <div className="event event_1" style={{top: this.state.events[val].top, height: this.state.events[val].height}}>{this.state.events[val].lable}</div>
+		const events = Object.keys(this.props.events).map((val, i) => {
+			return <div className="event" key={this.props.events[val]._id} style={{top: this.props.events[val].top, height: this.props.events[val].height}}>{this.props.events[val].label}</div>
 		});
 		return(
 			<div className='main'>
 				<Header history={this.props.history} />
 				<Button variant="primary" onClick={() => this.setModalShow(true)}>Add event</Button>
 				<div className='app-content'>
-					<AddEventPanel 
-						show={this.state.modalShow}
-						setEvent={this.setEvent}
-		        		onHide={() => this.setModalShow(false)} />
 					<div className="calendar-markup">
 						<ol className="time-grid">
 							<li>
@@ -93,14 +100,31 @@ class Calendar extends React.Component {
 							</li>
 							<li>
 								<div className="time-line">
-									<div className="start-time">13:00</div>
-									<div className="half">13:30</div>
+									<div className="start-time">01:00</div>
+									<div className="half">01:30</div>
 								</div>
 							</li>
 							<li>
 								<div className="time-line">
-									<div className="start-time">14:00</div>
-									<div className="half">14:30</div>
+									<div className="start-time">02:00</div>
+									<div className="half">02:30</div>
+								</div>
+							</li>
+							<li>
+								<div className="time-line">
+									<div className="start-time">03:00</div>
+									<div className="half">03:30</div>
+								</div>
+							</li>
+							<li>
+								<div className="time-line">
+									<div className="start-time">04:00</div>
+									<div className="half">04:30</div>
+								</div>
+							</li>
+							<li>
+								<div className="time-line">
+									<div className="start-time">05:00</div>
 								</div>
 							</li>
 						</ol>
@@ -109,9 +133,24 @@ class Calendar extends React.Component {
 						</div>
 					</div>
 				</div>
+				<AddEventPanel 
+					show={this.state.modalShow}
+					setEvent={this.setEvent}
+	        		onHide={() => this.setModalShow(false)} />
 			</div>
 		);
 	}
 }
 
-export default Calendar;
+const mapStateToProps = (state) => {
+	return {
+		events: state.events.userEvents,
+	}
+}
+
+const mapDispatchToProps = {
+	add_event_action,
+	get_event_action
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar);

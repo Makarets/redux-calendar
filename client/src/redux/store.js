@@ -3,9 +3,11 @@ import { reducer as formReducer } from 'redux-form';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import authReducer from './Auth/reducer';
+import eventReducer from './Calendar/reducer';
 
 const reducers = combineReducers({
 	user: authReducer,
+    events: eventReducer,
 	form: formReducer
 });
 
@@ -18,6 +20,7 @@ const saveState = (state) => {
         // Clone state
         const stateClone = JSON.parse(serialisedState);
         delete stateClone.form;
+        delete stateClone.events;
         
         // Save the serialised state to localStorage against the key 'app_state'
         window.localStorage.setItem('app_state', JSON.stringify(stateClone));
@@ -38,8 +41,9 @@ const loadState = () => {
         // De-serialise the saved state.
         const deserialiseState = JSON.parse(serialisedState);
 
-        // remove forms state, and return it.
+        // remove forms and events state, and return it.
         delete deserialiseState.form;
+        delete deserialiseState.events;
         return deserialiseState;
     } catch (err) {
         // Return undefined if localStorage is not available, 

@@ -21,6 +21,9 @@ const loginValidation = data => {
 
 const eventValidation = data => {
 	const schema = Joi.object({
+		top: Joi.number().required(),
+		label: Joi.string().required(),
+		height: Joi.number().required(),
 		user_id: Joi.string().required(),
 		eventStart: Joi.number().required(),
 		eventDuration: Joi.number().required()
