@@ -48,14 +48,17 @@
 			}
 			& .event-list {
 				& .event {
+					width: 200px;
 					max-width: 200px;
 					display: inline-block;
 					font-size: 14px;
-					left: 50px;
 					padding: 5px 8px;
 					background: #E2ECF5;
 					border-left: 1.5px solid #6E9ECF;
 					position: absolute;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+   	 				overflow: hidden;
 				}
 			}
 		}

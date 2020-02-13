@@ -22,5 +22,8 @@ export const eventAPI = {
 	},
 	getUserEvents(user_id) {
 		return instance.get("/event/" + user_id)
+	},
+	exportEvents(user_id) {
+		return instance.get("/event/export/" + user_id)
 	}
 }

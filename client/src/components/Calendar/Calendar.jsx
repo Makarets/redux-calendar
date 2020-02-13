@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Header from '../common/Header.jsx';
 import { AddEventPanel } from './AddEventPanel.jsx';
 import { Modal, Button  } from 'react-bootstrap';
-import { add_event_action, get_event_action } from "../../redux/Calendar/actions";
+import { add_event_action, get_event_action, export_event_action } from "../../redux/Calendar/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -23,11 +23,11 @@ class Calendar extends React.Component {
 	}
 
 	setEventInfo = (startH, startM, endH, endM, label) => {
-		const eventEnd = endH + endM;
-		const eventStart = startH + startM;
-		const eventTop = Math.ceil((eventStart)*3.333);
+		const eventEnd    = endH + endM;
+		const eventStart  = startH + startM;
+		const eventTop    = Math.ceil((eventStart)*3.333);
 		const eventHeight = Math.ceil((eventEnd - eventStart)*3.333);
-		const userId = localStorage.getItem("user_id");
+		const userId      = localStorage.getItem("user_id");
 		this.props.add_event_action({
 			label: label, 
 			top: eventTop,
@@ -46,25 +46,65 @@ class Calendar extends React.Component {
 		this.setEventInfo(start_hours, start_minutes, end_hours, end_minutes, data.label);
 	}
 
+	exportJSON = () => {
+		const userId = localStorage.getItem("user_id");
+		this.props.export_event_action(userId);
+	} 
+
 	componentDidMount() {
 		const userId = localStorage.getItem("user_id");
 		this.props.get_event_action(userId);
-		setTimeout(function(){
-			var elem = document.getElementsByClassName('event');
-			for(let i=0; elem.length > i; i++) {
-				console.log(elem[i].getBoundingClientRect());
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.events !== prevProps.events) {
+			const elem = document.querySelectorAll('.event');
+			for(let i=0; i < elem.length; i++) {
+				let nextElem = elem[i].nextElementSibling;
+				if(nextElem && nextElem.classList.contains('intersection')) {
+					let leftOffsStack = elem[i].offsetLeft;
+					elem[i].style.width = '100px';
+					nextElem.style.left = leftOffsStack + 100 + 'px';
+				}
 			}
-		}, 3000)
+		}
 	}
 
 	render() {
-		const events = Object.keys(this.props.events).map((val, i) => {
-			return <div className="event" key={this.props.events[val]._id} style={{top: this.props.events[val].top, height: this.props.events[val].height}}>{this.props.events[val].label}</div>
+		const events = Object.keys(this.props.events).map((elem, i, arr) => {
+			var newClass = '';
+			var styles = {
+				left: 50,
+				top: this.props.events[elem].top,
+				height: this.props.events[elem].height
+			}
+			
+			if(i !== 0) {
+				let currEvent = this.props.events[i];
+				let prevEvent = this.props.events[--i];
+				let topA = currEvent.top;
+				let topB = prevEvent.top;
+				let sumA = currEvent.top + currEvent.height;
+				let sumB = prevEvent.top + prevEvent.height;
+				if(sumA > topB && sumB > topA) {
+					styles = {
+						left: 0,
+						width: 100,
+						top: this.props.events[elem].top,
+						height: this.props.events[elem].height
+					}
+					newClass = ' intersection';
+				}
+			}
+			return 	<div className={"event"+newClass} key={this.props.events[elem]._id} style={styles}>
+						{this.props.events[elem].label}
+					</div>
 		});
 		return(
 			<div className='main'>
 				<Header history={this.props.history} />
 				<Button variant="primary" onClick={() => this.setModalShow(true)}>Add event</Button>
+				<Button variant='error' onClick={this.exportJSON}>Export Calendar to JSON</Button>
 				<div className='app-content'>
 					<div className="calendar-markup">
 						<ol className="time-grid">
@@ -150,7 +190,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	add_event_action,
-	get_event_action
+	get_event_action,
+	export_event_action
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
