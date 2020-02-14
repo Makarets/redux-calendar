@@ -1,7 +1,7 @@
 
 =====**Redux Calendar app**=====
 
-To get rep.:
+### To get rep.:
 	git clone https://github.com/Makarets/redux-calendar.git
 
 
