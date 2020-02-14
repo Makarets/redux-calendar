@@ -16,5 +16,5 @@ To get rep.:
 3. into the console run: npm start
 
 #### Use this data for fast login:
-* email: makarets2508@gmail.com
-* password: qwerty123
+	email: makarets2508@gmail.com
+	password: qwerty123
