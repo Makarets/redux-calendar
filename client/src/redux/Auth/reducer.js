@@ -1,7 +1,8 @@
 import { ON_LOGIN, ON_LOGOUT } from "./actions";
 
 const initialState = {
-	isAuth: false
+	isAuth: false,
+	userId: ''
 }
 
 export default function authReducer(state = initialState, action) {
@@ -9,7 +10,8 @@ export default function authReducer(state = initialState, action) {
 		case ON_LOGIN:
 			return {
 				...state,
-				isAuth: true
+				isAuth: true,
+				userId: action.payload
 			}
 		case ON_LOGOUT:
 			return {

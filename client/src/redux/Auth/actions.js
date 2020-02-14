@@ -26,7 +26,10 @@ export const login_action = (formData, history) => {
 		return authAPI.login(formData).then(res => {
 			history.push('/');
 			localStorage.setItem('user_id', res.data.user_id);
-			dispatch({ type: ON_LOGIN });
+			dispatch({
+				type: ON_LOGIN,
+				payload: res.data.user_id
+			});
 		}).catch((err) => {
 			let name = err.response.data.error_field;
 			let message = err.response.data.message;

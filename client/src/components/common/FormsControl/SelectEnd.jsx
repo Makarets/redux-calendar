@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from 'react-bootstrap';
 
-export const Select = ({input, meta, ...props}) => {
+export const SelectEnd = ({input, meta, ...props}) => {
 	return(
 		<div>
 			<Form.Control as="select" {...input} {...props} >

@@ -27,7 +27,7 @@ const AddEventForm = (props) => {
 						<Form.Row className='time-row'>
 							<Form.Label>from</Form.Label>
 							<Form.Group as='Col' controlId="formBasicnumber" className='hours-select'>
-								<Field name="start_hours"  component={Select} required />
+								<Field name="start_hours" onChange={(e) => {props.setStartTime(e)}} component={Select} required />
 							</Form.Group>
 							<Form.Label className='time-separate'>:</Form.Label>
 							<Form.Group as='Col' controlId="formBasicnumber">
@@ -37,11 +37,11 @@ const AddEventForm = (props) => {
 						<Form.Row className='time-row'>
 							<Form.Label>to</Form.Label>
 							<Form.Group as='Col' controlId="formBasicnumber" className='hours-select'>
-								<Field name="end_hours" component={Select} required />
+								<Field name="end_hours" onChange={(e) => {props.setEndTime(e)}} startTime={props.startTime} component={Select} required />
 							</Form.Group>
 							<Form.Label className='time-separate'>:</Form.Label>
 							<Form.Group as='Col' controlId="formBasicnumber">
-								<Field type="number" min='0' max='59' name="end_minutes" component={Input} required />
+								<Field type="number" min='0' max={props.endTime >= 540 ? 0 : 59} name="end_minutes" component={Input} required />
 							</Form.Group>
 						</Form.Row>
 						<Button variant="btn btn-success" type="submit" block>Save</Button>

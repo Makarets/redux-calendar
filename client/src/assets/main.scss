@@ -58,9 +58,10 @@
 				& .event {
 					width: 200px;
 					max-width: 200px;
+					min-height: 25px;
 					display: inline-block;
 					font-size: 14px;
-					padding: 5px 8px;
+					padding: 1px 8px;
 					background: #E2ECF5;
 					border-left: 1.5px solid #6E9ECF;
 					position: absolute;

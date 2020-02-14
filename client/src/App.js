@@ -29,7 +29,9 @@ class App extends React.Component {
 					<PrivateRoute exact path="/" isAuth={this.state.auth} component={Calendar} />
 					<PublicRoute path="/login" restricted={true} isAuth={this.state.auth} component={LoginReduxForm} />
 					<PublicRoute path="/signup" restricted={true} isAuth={this.state.auth} component={RegistrationReduxForm} />
-					
+					<Route path='*' exact={true}>
+						<Redirect from='*' to='/' />
+					</Route>
 				</Switch>
 			</BrowserRouter>
 		);

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { reset } from 'redux-form';
 import Header from '../common/Header.jsx';
 import { AddEventPanel } from './AddEventPanel.jsx';
 import { Modal, Button  } from 'react-bootstrap';
@@ -12,7 +13,9 @@ class Calendar extends React.Component {
 	    super(props);
 
 	    this.state = {
-	    	modalShow: false
+	    	modalShow: false,
+	    	startTime: 0,
+	    	endTime: 0
 	    }
 	}
 
@@ -20,6 +23,7 @@ class Calendar extends React.Component {
 		this.setState({
 			modalShow: status
 		})
+		this.props.reset('addEventForm');
 	}
 
 	setEventInfo = (startH, startM, endH, endM, label) => {
@@ -38,6 +42,18 @@ class Calendar extends React.Component {
 		})
 	}
 
+	setStartTime = (e) => {
+		this.setState({
+			startTime: e.target.value
+		})
+	}
+
+	setEndTime = (e) => {
+		this.setState({
+			endTime: e.target.value
+		})
+	}
+
 	setEvent = (data) => {
 		const start_hours   = Number(data.start_hours);
 		const start_minutes = Number(data.start_minutes);
@@ -51,7 +67,7 @@ class Calendar extends React.Component {
 		this.props.get_event_action(userId);
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		if (this.props.events !== prevProps.events) {
 			const elem = document.querySelectorAll('.event');
 			for(let i=0; i < elem.length; i++) {
@@ -100,7 +116,7 @@ class Calendar extends React.Component {
 				<Header history={this.props.history} />
 				<div className="control-buttons">
 					<Button variant="success" onClick={() => this.setModalShow(true)}>Add event</Button>
-					<Button variant="info" href="http://localhost:9000/api/event/export/5e446c0f7e52b40d7498e49b" download="events.json">Export JSON</Button>
+					<Button variant="info" href={"http://localhost:9000/api/event/export/"+this.props.userId} download="events.json">Export JSON</Button>
 				</div>
 				<div className='app-content'>
 					<div className="calendar-markup">
@@ -173,6 +189,10 @@ class Calendar extends React.Component {
 				<AddEventPanel 
 					show={this.state.modalShow}
 					setEvent={this.setEvent}
+					startTime={this.state.startTime}
+					endTime={this.state.endTime}
+					setEndTime={this.setEndTime}
+					setStartTime={this.setStartTime}
 	        		onHide={() => this.setModalShow(false)} />
 			</div>
 		);
@@ -181,11 +201,13 @@ class Calendar extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		userId: state.user.userId,
 		events: state.events.userEvents,
 	}
 }
 
 const mapDispatchToProps = {
+	reset,
 	add_event_action,
 	get_event_action
 }
