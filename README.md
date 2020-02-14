@@ -10,7 +10,7 @@ To start express server:
 	1.go to the directory "api"
 	2.into the console run: npm install
 	3.into the console run: npm start
-
+	
 To start resct app:
 	1.go to the directory "client"
 	2.into the console run: npm install
