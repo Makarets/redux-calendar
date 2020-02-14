@@ -2,6 +2,8 @@ const router = require('express').Router();
 const Event = require('../model/Event');
 const { eventValidation } = require('../validation');
 const fs = require('fs');
+var http = require('http');
+const path = require('path');
 
 router.post('/add', async (req, res) => {
 	const {error} = eventValidation(req.body);
@@ -50,12 +52,8 @@ router.get('/export/:user_id', async (req, res) => {
 
 	let data = JSON.stringify(eventsJSON, null, 2);
 	fs.writeFileSync('events.json', data);
-    const file = 'D:/redux-calendar/api/events.json';
-  	res.download(file); // Set disposition and send it.
-
- 
-
-	return res.status(200).send('export has been completed!');
+	res.download('./events.json', 'events.json');
+	// return res.status(200).send('export has been completed!');
 })
 
 

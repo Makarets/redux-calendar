@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Header from '../common/Header.jsx';
 import { AddEventPanel } from './AddEventPanel.jsx';
 import { Modal, Button  } from 'react-bootstrap';
-import { add_event_action, get_event_action, export_event_action } from "../../redux/Calendar/actions";
+import { add_event_action, get_event_action } from "../../redux/Calendar/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -45,11 +45,6 @@ class Calendar extends React.Component {
 		const end_minutes   = Number(data.end_minutes);
 		this.setEventInfo(start_hours, start_minutes, end_hours, end_minutes, data.label);
 	}
-
-	exportJSON = () => {
-		const userId = localStorage.getItem("user_id");
-		this.props.export_event_action(userId);
-	} 
 
 	componentDidMount() {
 		const userId = localStorage.getItem("user_id");
@@ -103,8 +98,10 @@ class Calendar extends React.Component {
 		return(
 			<div className='main'>
 				<Header history={this.props.history} />
-				<Button variant="primary" onClick={() => this.setModalShow(true)}>Add event</Button>
-				<Button variant='error' onClick={this.exportJSON}>Export Calendar to JSON</Button>
+				<div className="control-buttons">
+					<Button variant="success" onClick={() => this.setModalShow(true)}>Add event</Button>
+					<Button variant="info" href="http://localhost:9000/api/event/export/5e446c0f7e52b40d7498e49b" download="events.json">Export JSON</Button>
+				</div>
 				<div className='app-content'>
 					<div className="calendar-markup">
 						<ol className="time-grid">
@@ -190,8 +187,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	add_event_action,
-	get_event_action,
-	export_event_action
+	get_event_action
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);

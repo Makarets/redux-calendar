@@ -45,10 +45,3 @@ export const get_event_action = (user_id) => {
 		})
 	}
 }
-
-export const export_event_action = (user_id) => {
-	return dispatch => {
-		return eventAPI.exportEvents(user_id).then(res => {
-		})
-	}
-}
