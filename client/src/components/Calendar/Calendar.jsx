@@ -21,7 +21,9 @@ class Calendar extends React.Component {
 
 	setModalShow = (status) => {
 		this.setState({
-			modalShow: status
+			modalShow: status,
+			startTime: 0,
+			endTime: 0
 		})
 		this.props.reset('addEventForm');
 	}
