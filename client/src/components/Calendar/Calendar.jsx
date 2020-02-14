@@ -4,7 +4,7 @@ import { reset } from 'redux-form';
 import Header from '../common/Header.jsx';
 import { AddEventPanel } from './AddEventPanel.jsx';
 import { Modal, Button  } from 'react-bootstrap';
-import { add_event_action, get_event_action } from "../../redux/Calendar/actions";
+import { add_event_action, get_event_action, remove_event_action } from "../../redux/Calendar/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -40,6 +40,14 @@ class Calendar extends React.Component {
 			eventStart: eventStart,
 			eventDuration: eventEnd - eventStart
 		})
+	}
+
+	removeEvent = (user_id, event_id) => {
+		this.props.remove_event_action(user_id, event_id);
+		var _this = this;
+		setTimeout(function(){
+			_this.props.get_event_action(user_id);
+		},250)
 	}
 
 	setStartTime = (e) => {
@@ -109,6 +117,7 @@ class Calendar extends React.Component {
 			}
 			return 	<div className={"event"+newClass} key={this.props.events[elem]._id} style={styles}>
 						{this.props.events[elem].label}
+						<div className='remove-event' onClick={() => this.removeEvent(this.props.events[elem].user_id,this.props.events[elem]._id)}>remove</div>
 					</div>
 		});
 		return(
@@ -209,7 +218,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
 	reset,
 	add_event_action,
-	get_event_action
+	get_event_action,
+	remove_event_action
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);

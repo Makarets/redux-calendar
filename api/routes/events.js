@@ -34,6 +34,19 @@ router.post('/add', async (req, res) => {
 	}
 });
 
+// DELETE event
+
+router.delete('/:user_id/remove/:event_id', async (req, res) => {
+	const event = await Event.findById(req.params.event_id, function(err, event) {
+		if(err) { return handleError(res, err); }
+	    if(!event) { return res.send(404); }
+	    event.remove(function(err) {
+			if(err) { return handleError(res, err); }
+			
+	    });
+	})
+});
+
 // GET user events
 router.get('/:user_id', async (req, res) => {
 	const events = await Event.find({user_id: req.params.user_id});
